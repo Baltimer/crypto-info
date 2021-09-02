@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted} from 'vue'
 import axios from 'axios'
 import CoinInfo from './models/CoinInfo'
 
@@ -29,9 +29,13 @@ export default defineComponent({
     coinInfo.value.push(new CoinInfo("Bitcoin", "bitcoin", "wide"))
     coinInfo.value.push(new CoinInfo("Dogecoin", "dogecoin", "small"))
     coinInfo.value.push(new CoinInfo("Coinary", "coinary-token", "tall"))
+    coinInfo.value.push(new CoinInfo("Ethereum", "ethereum", "big"))
     coinInfo.value.push(new CoinInfo("Axie", "axie-infinity", "tall"))
     coinInfo.value.push(new CoinInfo("SLP", "smooth-love-potion", "small"))
     coinInfo.value.push(new CoinInfo("PvU", "plant-vs-undead-token", "small"))
+    coinInfo.value.push(new CoinInfo("Weyu", "weyu", "wide"))
+    coinInfo.value.push(new CoinInfo("Dragon Warrior", "dragon-warrior", "small"))
+    coinInfo.value.push(new CoinInfo("Binamon", "binamon", "small"))
 
     const currencies = ["usd", "btc", "bnb"]
     const actualTime = ref(new Date().toLocaleString("es-ES"))
@@ -41,26 +45,37 @@ export default defineComponent({
     function refreshTime() {
       actualTime.value = new Date().toLocaleString("es-ES")
     }
-
-    axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${coinInfo.value.map((c) => c.token).join(",")}&vs_currencies=${currencies.join(",")}`)
-      .then(({data}) => {
-        Array.from(Object.keys(data)).forEach((coin) => {
-          let selected = coinInfo.value.filter((info) => info.token == coin)
-          if(selected.length == 1){
-            selected[0].coin = data[coin]
-          }
+    
+    function getData() {
+      loading.value = true
+      axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${coinInfo.value.map((c) => c.token).join(",")}&vs_currencies=${currencies.join(",")}`)
+        .then(({data}) => {
+          Array.from(Object.keys(data)).forEach((coin) => {
+            let selected = coinInfo.value.filter((info) => info.token == coin)
+            if(selected.length == 1){
+              selected[0].coin = data[coin]
+            }
+          })
+          loading.value = false
         })
-        loading.value = false
-      })
-      .catch((error) => {
-        console.error(error)
-      })
+        .catch((error) => {
+          console.error(error)
+        })
+    }
+
+    setInterval(getData, 30000)
+
+    onMounted(() => {
+      getData()
+    })
+
     return {
       actualTime,
       coinInfo,
       loading
     }
   }
+
 })
 </script>
 
