@@ -8,7 +8,7 @@
     <div v-for="coin in coinInfo" :key="coin.name" class="flex min-w-min w-100 border border-white rounded-lg border-opacity-30 shadow-md p-2" :class="coin.space">
       <div class="flex justify-between w-full px-2 text-xl">
         <span>{{coin.name}}</span>
-        <span>{{Intl.NumberFormat("es-ES").format((((coin.coin.usd + Number.EPSILON)*100)/100))}} USD</span>
+        <span>{{Intl.NumberFormat("es-ES", {minimumFractionDigits: coin.decimals}).format((((coin.coin.usd + Number.EPSILON)*100)/100))}} USD</span>
       </div>
     </div>
   </div>
@@ -26,6 +26,7 @@ export default defineComponent({
     const loading = ref(true)
     const coinInfo = ref(new Array<CoinInfo>())
     coinInfo.value.push(new CoinInfo("Cardano", "cardano", "big"))
+    coinInfo.value.push(new CoinInfo("Mini Cardano", "mini-cardano", "wide", 7))
     coinInfo.value.push(new CoinInfo("Bitcoin", "bitcoin", "wide"))
     coinInfo.value.push(new CoinInfo("Dogecoin", "dogecoin", "small"))
     coinInfo.value.push(new CoinInfo("Coinary", "coinary-token", "tall"))
@@ -33,7 +34,7 @@ export default defineComponent({
     coinInfo.value.push(new CoinInfo("Axie", "axie-infinity", "tall"))
     coinInfo.value.push(new CoinInfo("SLP", "smooth-love-potion", "small"))
     coinInfo.value.push(new CoinInfo("PvU", "plant-vs-undead-token", "small"))
-    coinInfo.value.push(new CoinInfo("Weyu", "weyu", "wide"))
+    coinInfo.value.push(new CoinInfo("Weyu", "weyu", "wide", 4))
     coinInfo.value.push(new CoinInfo("Dragon Warrior", "dragon-warrior", "small"))
     coinInfo.value.push(new CoinInfo("Binamon", "binamon", "small"))
 
