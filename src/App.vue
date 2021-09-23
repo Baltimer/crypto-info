@@ -37,6 +37,8 @@ export default defineComponent({
     coinInfo.value.push(new CoinInfo("Weyu", "weyu", "wide", 4))
     coinInfo.value.push(new CoinInfo("Dragon Warrior", "dragon-warrior", "small"))
     coinInfo.value.push(new CoinInfo("Binamon", "binamon", "small"))
+    coinInfo.value.push(new CoinInfo("Overlord", "overlord", "small", 3))
+    coinInfo.value.push(new CoinInfo("BNB", "binancecoin", "wide"))
 
     const currencies = ["usd", "btc", "bnb"]
     const actualTime = ref(new Date().toLocaleString("es-ES"))
